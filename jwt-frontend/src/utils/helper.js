@@ -11,15 +11,16 @@ export const handleLogin = async (username, password, navigate) => {
     alert("Login Successful");
     navigate("/user");
   } catch (error) {
-    alert("Login Failed");
+    alert(error.response.data.message);
   }
 };
 
 export const handleSignUp = async (username, password) => {
   try {
-    await signUp(username, password);
+    const response = await signUp(username, password);
+    console.log(response);
     alert("User Registered Successfully!");
   } catch (error) {
-    alert("Registration Failure ☹️");
+    alert(error.response.data.message);
   }
 };
