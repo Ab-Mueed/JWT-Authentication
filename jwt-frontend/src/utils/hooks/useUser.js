@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   refreshToken,
   isTokenExpired,
@@ -35,11 +35,6 @@ const useUser = () => {
       alert("Failed to access protected resource.");
     }
   };
-
-  useEffect(() => {
-    console.log("useEffect");
-    setAccessToken(localStorage.getItem("accessToken"));
-  }, []);
 
   return { accessToken, protectedData, username, handleProtectedRequest };
 };

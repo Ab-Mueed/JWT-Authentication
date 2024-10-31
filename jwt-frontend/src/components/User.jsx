@@ -32,7 +32,7 @@ const UserPage = () => {
           expires in 2 minutes, allowing access token renewal every 30 seconds
           within that period. Once the refresh token expires, any attempt to
           access protected resources will prompt an alert to log in again,
-          indicating the refresh token is no longer valid
+          indicating the refresh token is no longer valid.
         </p>
 
         <button
