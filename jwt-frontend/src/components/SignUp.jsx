@@ -1,19 +1,14 @@
 import { useState } from "react";
-import { signUp } from "../AuthService";
 import { Link } from "react-router-dom";
+import { handleSignUp } from "../utils/helper";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignUp = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await signUp(username, password);
-      alert("User Registered Successfully!");
-    } catch (error) {
-      alert("Registration Failure ☹️");
-    }
+    handleSignUp(username, password);
   };
 
   return (
@@ -22,7 +17,7 @@ const SignUp = () => {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-[#00ff99]">
           Sign Up
         </h1>
-        <form onSubmit={handleSignUp} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <input
             className="block w-full rounded-lg border-0 py-2 px-4 text-gray-900 shadow-md ring-1 ring-inset ring-gray-600 placeholder-gray-500 focus:ring-2 focus:ring-[#00ff99] sm:text-base"
             type="text"

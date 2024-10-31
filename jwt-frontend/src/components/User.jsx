@@ -1,46 +1,8 @@
-import { useState, useEffect } from "react";
-import {
-  refreshToken,
-  isTokenExpired,
-  fetchProtectedResource,
-} from "../AuthService";
-import axios from "axios";
+import useUser from "../utils/hooks/useUser";
 
 const UserPage = () => {
-  const [accessToken, setAccessToken] = useState(
-    localStorage.getItem("accessToken")
-  );
-  console.log(accessToken);
-  const [protectedData, setProtectedData] = useState(null);
-  const username = localStorage.getItem("username");
-
-  const handleProtectedRequest = async () => {
-    console.log("Handle Protected Request");
-    let token = accessToken;
-
-    if (isTokenExpired(token)) {
-      const refreshTokenValue = localStorage.getItem("refreshToken");
-      try {
-        token = await refreshToken(refreshTokenValue);
-        setAccessToken(token);
-        localStorage.setItem("accessToken", token);
-      } catch (error) {
-        alert("Failed to refresh token. Please log in again.");
-        return;
-      }
-    }
-
-    try {
-      const response = await fetchProtectedResource(token);
-      setProtectedData(response.data);
-    } catch (error) {
-      alert("Failed to access protected resource.");
-    }
-  };
-
-  useEffect(() => {
-    setAccessToken(localStorage.getItem("accessToken"));
-  }, []);
+  const { accessToken, protectedData, username, handleProtectedRequest } =
+    useUser();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#1c1c22] to-gray-900 text-white">
@@ -55,15 +17,22 @@ const UserPage = () => {
           token.
         </p>
         <p className="mb-4 text-gray-400 text-left ">
-          <span className="text-lg text-green-400">2. </span>Wait for 2 minutes,
-          then click on 'Access Protected Resource' again to see the access
-          token change, along with the iat (issued at) and exp (expiration)
-          fields in the Protected Data.
+          <span className="text-lg text-green-400">2. </span>Wait for 30
+          Seconds, then click on 'Access Protected Resource' again to see the
+          access token change, along with the iat (issued at) and exp
+          (expiration) fields in the Protected Data.
         </p>
         <p className="mb-4 text-gray-400 text-left">
           <span className="text-lg text-green-400">3. </span>If you click on the
-          "Access Protected Resource" button before the 2 minutes are up, you
-          will notice that nothing happens, as the token has not yet changed.
+          "Access Protected Resource" button before 30 Seconds are up, you will
+          notice that nothing happens, as the token has not yet changed.
+        </p>
+        <p className="mb-4 text-gray-400 text-left">
+          <span className="text-lg text-green-400">4. </span>The refresh token
+          expires in 2 minutes, allowing access token renewal every 30 seconds
+          within that period. Once the refresh token expires, any attempt to
+          access protected resources will prompt an alert to log in again,
+          indicating the refresh token is no longer valid
         </p>
 
         <button

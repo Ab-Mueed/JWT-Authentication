@@ -1,28 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { login } from "../AuthService";
 import { Link } from "react-router-dom";
+import { handleLogin } from "../utils/helper";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [accessToken, setAccessToken] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await login(username, password);
-      console.log(response)
-      setAccessToken(response.data.accessToken);
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
-      localStorage.setItem("username", username);
-      alert("Login Successful");
-      navigate("/user");
-    } catch (error) {
-      alert("Login Failed");
-    }
+    handleLogin(username, password, navigate);
   };
 
   return (
@@ -31,7 +19,7 @@ const Login = () => {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-[#00ff99]">
           Login
         </h1>
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <input
             className="block w-full rounded-lg border-0 py-2 px-4 text-gray-900 shadow-md ring-1 ring-inset ring-gray-600 placeholder-gray-500 focus:ring-2 focus:ring-[#00ff99] sm:text-base"
             type="text"
@@ -54,7 +42,10 @@ const Login = () => {
           </button>
         </form>
         <p className="md:text-right">
-          Create a New Account? <Link to={'/signup'} className="text-green-400">SignUp</Link>
+          Create a New Account?{" "}
+          <Link to={"/signup"} className="text-green-400">
+            SignUp
+          </Link>
         </p>
       </div>
     </div>
