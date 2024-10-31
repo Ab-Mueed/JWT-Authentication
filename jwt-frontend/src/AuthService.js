@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://jwt-authentication-backend-hdeb.onrender.com";
 
 export const signUp = async (username, password) => {
   return axios.post(`${API_URL}/signup`, { username, password });
